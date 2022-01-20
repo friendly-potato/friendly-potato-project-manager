@@ -8,9 +8,6 @@ var data_path: String = "C:/Users/theaz/dev"
 ###############################################################################
 
 func _ready() -> void:
-	get_tree().root.connect("size_changed", self, "_on_size_changed")
-	_on_size_changed()
-	
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/Run.connect("pressed", self, "_on_run")
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/New.connect("pressed", self, "_on_new")
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/Import.connect("pressed", self, "_on_import")
@@ -30,13 +27,7 @@ func _ready() -> void:
 ###############################################################################
 
 func _on_size_changed() -> void:
-	var size: Vector2 = OS.window_size
-	if size.x < initial_normal_buttons_size * 5:
-		normal_buttons_scroll.hide()
-		top_buttons_scroll.show()
-	else:
-		normal_buttons_scroll.show()
-		top_buttons_scroll.hide()
+	._on_size_changed()
 
 func _on_run() -> void:
 	if current_element != null:
@@ -45,6 +36,7 @@ func _on_run() -> void:
 
 func _on_new() -> void:
 	var popup: WindowDialog = load("res://views/projects/new-project-popup/new_project_popup.tscn").instance()
+	popup.parent = self
 	add_child(popup)
 
 func _on_import() -> void:

@@ -1,6 +1,8 @@
 class_name BaseHoverElement
 extends PanelContainer
 
+signal clicked()
+
 var panel: StyleBoxFlat
 var after_color: Color
 var before_color: Color

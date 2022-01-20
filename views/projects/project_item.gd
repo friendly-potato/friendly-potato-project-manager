@@ -1,8 +1,6 @@
 class_name ProjectItem
 extends BaseHoverElement
 
-signal clicked()
-
 onready var label: Label = $HBoxContainer/Label
 
 var changed_color: Color

@@ -4,18 +4,23 @@ extends Reference
 const DEBOUNCE_TIME: float = 0.5
 var should_save := false
 
-var config_path: String
+var config_path: String # For switching between debug config and release config
 var current_config: ConfigData
 
 class ConfigData:
-	var templates: Array = [] # Folder paths
-	var plugins: Array = [] # Plugin paths
+	
+	var templates: Array = ["test/template"] # Folder paths
+	var plugins: Array = ["test/plugin", "test/plugin1"] # Plugin paths
+	
+	# Config
+	
+	var show_full_file_paths := false
 	
 	func get_as_json() -> String:
 		var result: Dictionary = {}
 
 		for i in get_property_list():
-			if not i.name in ["Reference", "script", "Script Variables", "is_default_dirty"]:
+			if not i.name in ["Reference", "script", "Script Variables"]:
 				var i_value = get(i.name)
 
 				result[i.name] = i_value

@@ -3,7 +3,6 @@
 [ext_resource path="res://views/projects/new-project-popup/new_project_popup.gd" type="Script" id=1]
 
 [node name="NewProjectPopup" type="WindowDialog"]
-visible = true
 margin_right = 48.0
 margin_bottom = 40.0
 window_title = "Create New Project"
@@ -83,16 +82,48 @@ margin_right = 424.0
 margin_bottom = 92.0
 bbcode_enabled = true
 
-[node name="Renderer" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="TemplatesContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
 margin_top = 96.0
 margin_right = 424.0
-margin_bottom = 110.0
+margin_bottom = 114.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
+margin_right = 424.0
+margin_bottom = 14.0
+text = "Templates"
+align = 1
+
+[node name="Templates" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
+margin_top = 18.0
+margin_right = 424.0
+margin_bottom = 18.0
+
+[node name="PluginsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 118.0
+margin_right = 424.0
+margin_bottom = 136.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
+margin_right = 424.0
+margin_bottom = 14.0
+text = "Plugins"
+align = 1
+
+[node name="Plugins" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
+margin_top = 18.0
+margin_right = 424.0
+margin_bottom = 18.0
+
+[node name="Renderer" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 140.0
+margin_right = 424.0
+margin_bottom = 154.0
 text = "Renderer"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-margin_top = 114.0
+margin_top = 158.0
 margin_right = 424.0
-margin_bottom = 210.0
+margin_bottom = 254.0
 
 [node name="GL3" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 218.0
@@ -180,44 +211,12 @@ text = "Recommended for web games"
 align = 1
 
 [node name="RendererDisclaimer" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-margin_top = 214.0
+margin_top = 258.0
 margin_right = 424.0
-margin_bottom = 245.0
+margin_bottom = 289.0
 text = "Renderer can be changed later, but scenes may needed to be adjusted."
 align = 1
 autowrap = true
-
-[node name="TemplatesContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-margin_top = 249.0
-margin_right = 424.0
-margin_bottom = 267.0
-
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
-margin_right = 424.0
-margin_bottom = 14.0
-text = "Templates"
-align = 1
-
-[node name="Templates" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
-margin_top = 18.0
-margin_right = 424.0
-margin_bottom = 18.0
-
-[node name="PluginsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-margin_top = 271.0
-margin_right = 424.0
-margin_bottom = 289.0
-
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
-margin_right = 424.0
-margin_bottom = 14.0
-text = "Plugins"
-align = 1
-
-[node name="Plugins" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
-margin_top = 18.0
-margin_right = 424.0
-margin_bottom = 18.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 16.0

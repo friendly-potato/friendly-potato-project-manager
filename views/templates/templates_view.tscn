@@ -1,5 +1,18 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://views/base_view.tscn" type="PackedScene" id=1]
+[ext_resource path="res://views/templates/templates_view.gd" type="Script" id=2]
 
 [node name="TemplatesView" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Add" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="0"]
+margin_right = 100.0
+margin_bottom = 20.0
+text = "Add"
+
+[node name="Remove" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="1"]
+margin_top = 24.0
+margin_right = 100.0
+margin_bottom = 44.0
+text = "Remove"
