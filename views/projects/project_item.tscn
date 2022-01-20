@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://elements/base_hover_element.tscn" type="PackedScene" id=1]
+[ext_resource path="res://views/projects/project_item.gd" type="Script" id=2]
+
+[node name="ProjectItem" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="HBoxContainer" index="0"]
+margin_top = 288.0
+margin_bottom = 302.0

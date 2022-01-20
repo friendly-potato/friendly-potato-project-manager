@@ -1,0 +1,239 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://views/projects/new-project-popup/new_project_popup.gd" type="Script" id=1]
+
+[node name="NewProjectPopup" type="WindowDialog"]
+visible = true
+margin_right = 48.0
+margin_bottom = 40.0
+window_title = "Create New Project"
+resizable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+margin_right = 160.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+margin_right = 424.0
+margin_bottom = 289.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProjectName" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_right = 424.0
+margin_bottom = 14.0
+text = "Project Name:"
+
+[node name="ProjectLineEdit" type="LineEdit" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 424.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+
+[node name="ProjectPath" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 424.0
+margin_bottom = 60.0
+text = "Project Path:"
+
+[node name="ProjectPathContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 64.0
+margin_right = 424.0
+margin_bottom = 88.0
+
+[node name="ProjectPathLineEdit" type="LineEdit" parent="VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer"]
+margin_right = 361.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer"]
+margin_left = 365.0
+margin_right = 424.0
+margin_bottom = 24.0
+text = "Browse"
+
+[node name="WarningLabel" type="RichTextLabel" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 92.0
+margin_right = 424.0
+margin_bottom = 92.0
+bbcode_enabled = true
+
+[node name="Renderer" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 96.0
+margin_right = 424.0
+margin_bottom = 110.0
+text = "Renderer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 114.0
+margin_right = 424.0
+margin_bottom = 210.0
+
+[node name="GL3" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_right = 218.0
+margin_bottom = 96.0
+size_flags_horizontal = 3
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3"]
+margin_right = 218.0
+margin_bottom = 24.0
+pressed = true
+text = "OpenGL ES 3.0"
+align = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3"]
+margin_top = 28.0
+margin_right = 218.0
+margin_bottom = 42.0
+text = "Higher visual quality"
+align = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3"]
+margin_top = 46.0
+margin_right = 218.0
+margin_bottom = 60.0
+text = "All features available"
+align = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3"]
+margin_top = 64.0
+margin_right = 218.0
+margin_bottom = 78.0
+text = "Incompatible with older hardware"
+align = 1
+
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3"]
+margin_top = 82.0
+margin_right = 218.0
+margin_bottom = 96.0
+text = "Not recommended for web games"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_left = 222.0
+margin_right = 226.0
+margin_bottom = 96.0
+
+[node name="GL2" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_left = 230.0
+margin_right = 424.0
+margin_bottom = 96.0
+size_flags_horizontal = 3
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2"]
+margin_right = 194.0
+margin_bottom = 24.0
+text = "OpenGL ES 2.0"
+align = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2"]
+margin_top = 28.0
+margin_right = 194.0
+margin_bottom = 42.0
+text = "Lower visual quality"
+align = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2"]
+margin_top = 46.0
+margin_right = 194.0
+margin_bottom = 60.0
+text = "Some features not available"
+align = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2"]
+margin_top = 64.0
+margin_right = 194.0
+margin_bottom = 78.0
+text = "Works on most hardware"
+align = 1
+
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2"]
+margin_top = 82.0
+margin_right = 194.0
+margin_bottom = 96.0
+text = "Recommended for web games"
+align = 1
+
+[node name="RendererDisclaimer" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 214.0
+margin_right = 424.0
+margin_bottom = 245.0
+text = "Renderer can be changed later, but scenes may needed to be adjusted."
+align = 1
+autowrap = true
+
+[node name="TemplatesContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 249.0
+margin_right = 424.0
+margin_bottom = 267.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
+margin_right = 424.0
+margin_bottom = 14.0
+text = "Templates"
+align = 1
+
+[node name="Templates" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer"]
+margin_top = 18.0
+margin_right = 424.0
+margin_bottom = 18.0
+
+[node name="PluginsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 271.0
+margin_right = 424.0
+margin_bottom = 289.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
+margin_right = 424.0
+margin_bottom = 14.0
+text = "Plugins"
+align = 1
+
+[node name="Plugins" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/PluginsContainer"]
+margin_top = 18.0
+margin_right = 424.0
+margin_bottom = 18.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 16.0
+margin_right = 160.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="CreateEdit" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 95.0
+margin_bottom = 20.0
+size_flags_horizontal = 6
+text = "Create & Edit"
+
+[node name="Cancel" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 102.0
+margin_right = 156.0
+margin_bottom = 20.0
+size_flags_horizontal = 6
+text = "Cancel"

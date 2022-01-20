@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://views/base_view.tscn" type="PackedScene" id=1]
+[ext_resource path="res://views/projects/projects_view.gd" type="Script" id=3]
+
+[node name="ProjectsView" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="Run" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="0"]
+margin_right = 100.0
+margin_bottom = 20.0
+text = "Run"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="1"]
+margin_top = 24.0
+margin_right = 100.0
+margin_bottom = 28.0
+
+[node name="New" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="2"]
+margin_top = 32.0
+margin_right = 100.0
+margin_bottom = 52.0
+text = "New"
+
+[node name="Import" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="3"]
+margin_top = 56.0
+margin_right = 100.0
+margin_bottom = 76.0
+text = "Import"
+
+[node name="Scan" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="4"]
+margin_top = 80.0
+margin_right = 100.0
+margin_bottom = 100.0
+text = "Scan"
