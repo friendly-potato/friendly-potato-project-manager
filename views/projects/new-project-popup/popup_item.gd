@@ -14,7 +14,7 @@ var mouseover_label: Label
 ###############################################################################
 
 func _ready() -> void:
-	if AppManager.cm.current_config.show_full_file_paths:
+	if AppManager.cm.config().show_full_file_paths:
 		label.text = text
 	else:
 		label.text = text.get_file()

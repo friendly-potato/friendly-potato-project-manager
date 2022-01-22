@@ -48,10 +48,12 @@ func _on_size_changed() -> void:
 # Public functions                                                            #
 ###############################################################################
 
-func create_dir_selector() -> FileDialog:
+func create_dir_selector(mode: int = FileDialog.MODE_OPEN_DIR) -> FileDialog:
 	var popup := FileDialog.new()
 	# Only allow for directories to be selected
-	popup.mode = FileDialog.MODE_OPEN_DIR
+	popup.mode = mode
+	popup.access = FileDialog.ACCESS_FILESYSTEM
+	popup.show_hidden_files = true
 	popup.connect("popup_hide", AppManager, "destroy_node", [popup])
 	
 	return popup

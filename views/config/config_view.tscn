@@ -6,6 +6,9 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 1024.0
@@ -13,50 +16,65 @@ margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TopButtonScroll" type="ScrollContainer" parent="VBoxContainer"]
+[node name="Search" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 0, 25 )
+margin_bottom = 24.0
 
-[node name="TopButtons" type="HBoxContainer" parent="VBoxContainer/TopButtonScroll"]
+[node name="Label" type="Label" parent="VBoxContainer/Search"]
+margin_top = 5.0
+margin_right = 42.0
+margin_bottom = 19.0
+text = "Search"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Search"]
+margin_left = 46.0
+margin_right = 1024.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 29.0
+margin_top = 28.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
-margin_right = 920.0
-margin_bottom = 571.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="FilterContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 114.0
+margin_bottom = 572.0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/FilterContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 913.0
-margin_bottom = 564.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
-margin_right = 906.0
-margin_bottom = 557.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ButtonScroll" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 924.0
-margin_right = 1024.0
-margin_bottom = 571.0
+margin_right = 107.0
+margin_bottom = 565.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.25
 
-[node name="Buttons" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ButtonScroll"]
+[node name="Filters" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/FilterContainer/ScrollContainer"]
 margin_right = 100.0
-margin_bottom = 571.0
+margin_bottom = 558.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ConfigContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 118.0
+margin_right = 1024.0
+margin_bottom = 572.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/ConfigContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 899.0
+margin_bottom = 565.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Configs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ConfigContainer/ScrollContainer"]
+margin_right = 892.0
+margin_bottom = 558.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

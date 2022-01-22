@@ -21,6 +21,7 @@ margin_top = 286.0
 margin_right = 982.0
 margin_bottom = 300.0
 size_flags_horizontal = 3
+autowrap = true
 
 [node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
 margin_left = 986.0

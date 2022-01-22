@@ -5,7 +5,8 @@ extends BaseView
 ###############################################################################
 
 func _ready() -> void:
-	pass
+	while not AppManager.cm.finished_loading:
+		yield(get_tree(), "idle_frame")
 
 ###############################################################################
 # Connections                                                                 #

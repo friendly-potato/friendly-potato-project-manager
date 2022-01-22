@@ -1,5 +1,8 @@
 extends BaseView
 
+const PROJECT_ITEM: PackedScene = preload("res://views/projects/project_item.tscn")
+const NEW_PROJECT_POPUP: PackedScene = preload("res://views/projects/new-project-popup/new_project_popup.tscn")
+
 # TODO testing
 var data_path: String = "C:/Users/theaz/dev"
 
@@ -20,6 +23,9 @@ func _ready() -> void:
 		elif c is HSeparator:
 			top_buttons.add_child(VSeparator.new())
 	
+	while not AppManager.cm.finished_loading:
+		yield(get_tree(), "idle_frame")
+	
 	_scan()
 
 ###############################################################################
@@ -35,7 +41,7 @@ func _on_run() -> void:
 		get_tree().quit()
 
 func _on_new() -> void:
-	var popup: WindowDialog = load("res://views/projects/new-project-popup/new_project_popup.tscn").instance()
+	var popup: WindowDialog = NEW_PROJECT_POPUP.instance()
 	popup.parent = self
 	add_child(popup)
 
@@ -51,8 +57,7 @@ func _on_scan() -> void:
 func _on_project_item_clicked(pi: ProjectItem) -> void:
 	var current_time: int = OS.get_ticks_msec()
 	if (current_element == pi and abs(last_click_time - current_time) < DOUBLE_CLICK_TIME):
-		OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", pi.path], false)
-		get_tree().quit()
+		open_project(pi.path)
 	else:
 		if current_element != null:
 			current_element.before_color = current_element.changed_color
@@ -84,10 +89,10 @@ func _scan() -> void:
 		# TODO parse project.godot for engine version
 		if not dir.file_exists("%s/%s/project.godot" % [data_path, file_name]):
 			file_name = dir.get_next()
-			AppManager.logger.info("no project.godot found for %s/%s" % [data_path, file_name])
+			AppManager.logger.debug("no project.godot found for %s/%s" % [data_path, file_name])
 			continue
 		
-		var e: ProjectItem = load("res://views/projects/project_item.tscn").instance()
+		var e: ProjectItem = PROJECT_ITEM.instance()
 		vbox.add_child(e)
 		e.label.text = file_name
 		e.path = "%s/%s" % [data_path, file_name]
@@ -98,3 +103,7 @@ func _scan() -> void:
 ###############################################################################
 # Public functions                                                            #
 ###############################################################################
+
+func open_project(path: String) -> void:
+	OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", path], false)
+	get_tree().quit()

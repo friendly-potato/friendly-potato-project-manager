@@ -33,13 +33,19 @@ _global_script_classes=[ {
 "class": "ProjectItem",
 "language": "GDScript",
 "path": "res://views/projects/project_item.gd"
+}, {
+"base": "BaseHoverElement",
+"class": "TemplateItem",
+"language": "GDScript",
+"path": "res://views/templates/template_item.gd"
 } ]
 _global_script_class_icons={
 "BaseHoverElement": "",
 "BaseView": "",
 "ConfigManager": "",
 "Logger": "",
-"ProjectItem": ""
+"ProjectItem": "",
+"TemplateItem": ""
 }
 
 [application]

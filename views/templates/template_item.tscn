@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://elements/base_hover_element.tscn" type="PackedScene" id=1]
+[ext_resource path="res://views/templates/template_item.gd" type="Script" id=2]
+
+[node name="TemplateItem" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="HBoxContainer" index="0"]
+margin_top = 288.0
+margin_bottom = 302.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" index="1"]
+margin_left = 814.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 10
+
+[node name="Button" type="Button" parent="HBoxContainer/HBoxContainer" index="0"]
+margin_right = 90.0
+margin_bottom = 590.0
+text = "Store locally"
+
+[node name="EditIgnorables" type="Button" parent="HBoxContainer/HBoxContainer" index="1"]
+margin_left = 94.0
+margin_right = 200.0
+margin_bottom = 590.0
+text = "Edit ignorables"
+
+[node name="IgnorablesContainer" type="HBoxContainer" parent="HBoxContainer" index="2"]
+visible = false
+margin_left = 511.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/IgnorablesContainer" index="0"]
+margin_right = 437.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Browse" type="Button" parent="HBoxContainer/IgnorablesContainer" index="1"]
+margin_left = 441.0
+margin_right = 503.0
+margin_bottom = 293.0
+size_flags_vertical = 3
+text = "Browse"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/IgnorablesContainer" index="2"]
+margin_left = 441.0
+margin_right = 503.0
+margin_bottom = 590.0
+
+[node name="Confirm" type="Button" parent="HBoxContainer/IgnorablesContainer/VBoxContainer" index="0"]
+margin_top = 297.0
+margin_right = 62.0
+margin_bottom = 590.0
+size_flags_vertical = 3
+text = "Confirm"
+
+[node name="Cancel" type="Button" parent="HBoxContainer/IgnorablesContainer/VBoxContainer" index="1"]
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Cancel"

@@ -9,6 +9,11 @@ const ENVS: Dictionary = {
 onready var logger: Logger = load("res://utils/logger.gd").new()
 onready var cm: ConfigManager = load("res://utils/config_manager.gd").new()
 
+# Debounce
+const DEBOUNCE_TIME: float = 5.0
+var debounce_counter: float = 0.0
+var should_save := false
+
 var env: String = ENVS.DEFAULT
 
 ###############################################################################
@@ -21,17 +26,23 @@ func _ready() -> void:
 	var system_env = OS.get_environment(ENV_VAR_NAME)
 	if system_env:
 		env = system_env
-	
-	cm.current_config = cm.ConfigData.new()
+
+func _process(delta: float) -> void:
+	if should_save:
+		debounce_counter += delta
+		if debounce_counter > DEBOUNCE_TIME:
+			debounce_counter = 0.0
+			should_save = false
+			cm.save_config()
 
 ###############################################################################
 # Connections                                                                 #
 ###############################################################################
 
 func _on_tree_exiting() -> void:
-
 	if env != ENVS.TEST:
-		pass
+		should_save = false
+		cm.save_config()
 	
 	logger.info("Exiting. おやすみ。")
 
