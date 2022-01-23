@@ -1,19 +1,27 @@
 class_name BaseHoverElement
 extends PanelContainer
 
+# warning-ignore:unused_signal
 signal clicked()
 
 var panel: StyleBoxFlat
 var after_color: Color
 var before_color: Color
 
+var label: Label
+
+var path: String
+
 ###############################################################################
 # Builtin functions                                                           #
 ###############################################################################
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	connect("mouse_entered", self, "_on_mouse_entered")
+# warning-ignore:return_value_discarded
 	connect("mouse_exited", self, "_on_mouse_exited")
+# warning-ignore:return_value_discarded
 	connect("gui_input", self, "_on_gui_input")
 	
 	panel = get("custom_styles/panel").duplicate(true)
@@ -47,6 +55,9 @@ static func _set_panel_border_width(p: StyleBoxFlat, width: int) -> void:
 	p.border_width_right = width
 	p.border_width_top = width
 	p.border_width_bottom = width
+
+static func _set_label_text(l: Label, t: String) -> void:
+	l.text = t if AppManager.cm.config().show_full_file_paths else t.get_file()
 
 ###############################################################################
 # Public functions                                                            #

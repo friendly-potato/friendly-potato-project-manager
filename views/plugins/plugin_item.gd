@@ -1,17 +1,18 @@
-class_name ProjectItem
+class_name PluginItem
 extends BaseHoverElement
 
-var changed_color: Color
+onready var buttons: HBoxContainer = $HBoxContainer/HBoxContainer
+var store_locally_button: StoreLocallyButton
 
 ###############################################################################
 # Builtin functions                                                           #
 ###############################################################################
 
 func _ready() -> void:
-	changed_color = before_color
-	
 	label = $HBoxContainer/Label
 	_set_label_text(label, path)
+	
+	buttons.add_child(store_locally_button)
 
 ###############################################################################
 # Connections                                                                 #

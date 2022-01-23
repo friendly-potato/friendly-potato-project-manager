@@ -26,6 +26,8 @@ const CONFIG_NAME: String = "config.json"
 var _config_path: String # For switching between debug config and release config
 var _current_config: ConfigData
 
+# Metadata
+var dirty := false
 var finished_loading := false
 
 class Loadable:
@@ -174,15 +176,17 @@ class ConfigData extends Loadable:
 	
 	var plugins: Array = [] # Plugin
 	
-	# Config
+	var default_new_project_name: String
 	
 	var default_search_path: String
 	var show_full_file_paths := false
+	var known_projects: Array = [] # String paths
 	
 	func _init() -> void:
 		path = "root"
 		type = LoadableType.CONFIG_DATA
 		
+		default_new_project_name = "New Project"
 		default_search_path = _determine_default_search_path()
 
 	func load_from_json(json_string: String) -> int:
@@ -256,7 +260,7 @@ class ConfigData extends Loadable:
 		Find a loadable by path and replace the data in it via key-value pair
 		"""
 		var l = _find_matching_loadable("path", path, list)
-		if (typeof(l) == TYPE_INT and l == FAILED):
+		if typeof(l) == TYPE_INT:
 			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
 			return
 		
@@ -282,11 +286,27 @@ class ConfigData extends Loadable:
 	
 	func _remove_loadable(path: String, list: Array) -> void:
 		var l = _find_matching_loadable("path", path, list)
-		if (typeof(l) == TYPE_INT and l == FAILED):
+		if typeof(l) == TYPE_INT:
 			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
 			return
 		
 		list.erase(l)
+	
+	func find_template(path: String) -> Template:
+		var l = _find_matching_loadable("path", path, templates)
+		if typeof(l) == TYPE_INT:
+			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
+			return null
+		
+		return l
+	
+	func find_plugin(path: String) -> Template:
+		var l = _find_matching_loadable("path", path, plugins)
+		if typeof(l) == TYPE_INT:
+			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
+			return null
+		
+		return l
 	
 	func _find_matching_loadable(key: String, val, list: Array):
 		"""
@@ -314,11 +334,16 @@ class ConfigData extends Loadable:
 		var output: Array = []
 		match OS.get_name().to_lower():
 			"windows":
+# warning-ignore:return_value_discarded
 				OS.execute("echo", ["%HOMEDRIVE%%HOMEPATH%"], true, output)
 			"osx", "x11":
+# warning-ignore:return_value_discarded
 				OS.execute("echo", ["$HOME"], true, output)
 		if output.size() == 1:
-			return output[0].strip_edges()
+			var t: String = output[0].strip_edges()
+			if OS.get_name().to_lower() == "windows":
+				t = t.substr(2)
+			return t
 		return "/"
 
 ###############################################################################
@@ -329,7 +354,10 @@ func _init() -> void:
 	if not OS.is_debug_build():
 		_config_path = "user://"
 	else:
-		_config_path = "res://export/"
+		_config_path = ProjectSettings.globalize_path("res://export/")
+		if OS.get_name().to_lower() == "windows":
+			# Remove the drive for now
+			_config_path = _config_path.substr(2)
 	
 	load_config()
 	
@@ -351,6 +379,9 @@ func config() -> ConfigData:
 	# Just try to save whenever we access the config
 	AppManager.should_save = true
 	return _current_config
+
+func config_path() -> String:
+	return _config_path
 
 func save_config() -> void:
 	AppManager.logger.info("Saving config")

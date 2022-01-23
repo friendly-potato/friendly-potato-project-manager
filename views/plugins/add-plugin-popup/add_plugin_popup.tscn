@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://views/plugins/add-plugin-popup/add_plugin_popup.gd" type="Script" id=1]
+
+[node name="AddPluginPopup" type="FileDialog"]
+margin_right = 316.0
+margin_bottom = 149.0
+rect_min_size = Vector2( 300, 105 )
+window_title = "Select Plugin"
+mode_overrides_title = false
+mode = 2
+access = 2
+current_dir = "/Users/theaz/dev/friendly-potato-project-manager"
+current_path = "/Users/theaz/dev/friendly-potato-project-manager/"
+script = ExtResource( 1 )

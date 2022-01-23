@@ -8,6 +8,7 @@ const ENVS: Dictionary = {
 
 onready var logger: Logger = load("res://utils/logger.gd").new()
 onready var cm: ConfigManager = load("res://utils/config_manager.gd").new()
+onready var sb: SignalBroadcaster = load("res://utils/signal_broadcaster.gd").new()
 
 # Debounce
 const DEBOUNCE_TIME: float = 5.0
@@ -21,6 +22,7 @@ var env: String = ENVS.DEFAULT
 ###############################################################################
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	self.connect("tree_exiting", self, "_on_tree_exiting")
 
 	var system_env = OS.get_environment(ENV_VAR_NAME)

@@ -22,13 +22,19 @@ var template_group := ButtonGroup.new()
 ###############################################################################
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	connect("popup_hide", AppManager, "destroy_node", [self])
+# warning-ignore:return_value_discarded
 	project_path.connect("text_changed", self, "_on_project_path_changed")
 	
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3/CheckBox.group = button_group
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2/CheckBox.group = button_group
 	
+# warning-ignore:return_value_discarded
 	$VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer/Button.connect("pressed", self, "_on_browse")
+	
+	project_name.text = AppManager.cm.config().default_new_project_name
+	project_path.text = AppManager.cm.config().default_search_path
 	
 	# Add default (empty) project template first
 	var default_template = POPUP_ITEM.instance()
@@ -39,7 +45,9 @@ func _ready() -> void:
 	
 	_populate_templates_plugins()
 	
+# warning-ignore:return_value_discarded
 	create_edit.connect("pressed", self, "_on_create_edit")
+# warning-ignore:return_value_discarded
 	cancel.connect("pressed", AppManager, "destroy_node", [self])
 	
 	popup_centered_ratio()
@@ -50,7 +58,9 @@ func _ready() -> void:
 
 func _on_browse() -> void:
 	var popup: FileDialog = parent.create_dir_selector()
+# warning-ignore:return_value_discarded
 	popup.connect("dir_selected", self, "_on_dir_selected")
+	popup.current_dir = AppManager.cm.config().default_search_path
 	
 	add_child(popup)
 	popup.popup_centered_ratio()
@@ -83,6 +93,7 @@ func _on_create_edit() -> void:
 		AppManager.logger.error("Unable to check proposed project directory")
 		return
 	
+# warning-ignore:return_value_discarded
 	dir.list_dir_begin(true, false)
 	
 	var count: int = 0
@@ -104,8 +115,10 @@ func _on_create_edit() -> void:
 	match os:
 		"windows":
 			# This is so gross
+# warning-ignore:return_value_discarded
 			OS.execute("type", ["nul", ">", "%s/project.godot" % project_path.text])
 		"x11", "osx":
+# warning-ignore:return_value_discarded
 			OS.execute("touch", ["%s/project.godot" % project_path.text])
 	
 	if template != "Default":
@@ -114,6 +127,7 @@ func _on_create_edit() -> void:
 			AppManager.logger.error("Unable to open template: %s" % template)
 			return
 
+# warning-ignore:return_value_discarded
 		t_dir.list_dir_begin(true, false)
 
 		file_name = t_dir.get_next()
@@ -123,23 +137,24 @@ func _on_create_edit() -> void:
 				continue
 			match os:
 				"windows":
-					_rec_copy_windows("%s/%s" % [template, file_name], "%s/%s" % [project_path.text, file_name])
+					FileSystem.rec_copy_windows("%s/%s" % [template, file_name], "%s/%s" % [project_path.text, file_name])
 				"x11", "osx":
-					_rec_copy_linux("%s/%s" % [template, file_name], project_path.text)
+					FileSystem.rec_copy_linux("%s/%s" % [template, file_name], project_path.text)
 			file_name = t_dir.get_next()
 		
 		AppManager.logger.debug("Finished copying templates")
 
 	if selected_plugins.size() > 0:
 		if not dir.dir_exists("%s/addons" % project_path.text):
+# warning-ignore:return_value_discarded
 			dir.make_dir("%s/addons" % project_path.text)
 
 		for i in selected_plugins:
 			match os:
 				"windows":
-					_rec_copy_windows(i, "%s/addons" % project_path.text)
+					FileSystem.rec_copy_windows(i, "%s/addons" % project_path.text)
 				"x11", "osx":
-					_rec_copy_linux(i, "%s/addons" % project_path.text)
+					FileSystem.rec_copy_linux(i, "%s/addons" % project_path.text)
 		
 		AppManager.logger.debug("Finished copying templates")
 	
@@ -194,13 +209,6 @@ func _populate_templates_plugins() -> void:
 		var item = POPUP_ITEM.instance()
 		item.text = p.path
 		plugins.add_child(item)
-
-func _rec_copy_windows(dir: String, path: String) -> void:
-	# https://stackoverflow.com/questions/13314433/batch-file-to-copy-directories-recursively
-	OS.execute("CMD.exe", ["/c", "robocopy %s %s /e " % [dir, path]])
-
-func _rec_copy_linux(dir: String, path: String) -> void:
-	OS.execute("cp", ["-r", dir, path])
 
 ###############################################################################
 # Public functions                                                            #

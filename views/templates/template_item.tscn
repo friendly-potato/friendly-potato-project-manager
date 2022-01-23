@@ -11,19 +11,13 @@ margin_top = 288.0
 margin_bottom = 302.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" index="1"]
-margin_left = 814.0
+margin_left = 908.0
 margin_right = 1014.0
 margin_bottom = 590.0
 size_flags_horizontal = 10
 
-[node name="Button" type="Button" parent="HBoxContainer/HBoxContainer" index="0"]
-margin_right = 90.0
-margin_bottom = 590.0
-text = "Store locally"
-
-[node name="EditIgnorables" type="Button" parent="HBoxContainer/HBoxContainer" index="1"]
-margin_left = 94.0
-margin_right = 200.0
+[node name="EditIgnorables" type="Button" parent="HBoxContainer/HBoxContainer" index="0"]
+margin_right = 106.0
 margin_bottom = 590.0
 text = "Edit ignorables"
 

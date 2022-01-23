@@ -3,30 +3,24 @@ extends BaseView
 const PROJECT_ITEM: PackedScene = preload("res://views/projects/project_item.tscn")
 const NEW_PROJECT_POPUP: PackedScene = preload("res://views/projects/new-project-popup/new_project_popup.tscn")
 
-# TODO testing
-var data_path: String
-
 ###############################################################################
 # Builtin functions                                                           #
 ###############################################################################
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/Run.connect("pressed", self, "_on_run")
+# warning-ignore:return_value_discarded
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/New.connect("pressed", self, "_on_new")
+# warning-ignore:return_value_discarded
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/Import.connect("pressed", self, "_on_import")
+# warning-ignore:return_value_discarded
 	$VBoxContainer/HBoxContainer/ButtonScroll/Buttons/Scan.connect("pressed", self, "_on_scan")
 	
-	# Copy buttons and connections to top bar after hooking up connections
-	for c in normal_buttons.get_children():
-		if c is Button:
-			top_buttons.add_child((c as Button).duplicate())
-		elif c is HSeparator:
-			top_buttons.add_child(VSeparator.new())
+# warning-ignore:return_value_discarded
+	AppManager.sb.connect("rescan_triggered", self, "_on_rescan_triggered")
 	
-	while not AppManager.cm.finished_loading:
-		yield(get_tree(), "idle_frame")
-	
-	data_path = AppManager.cm.config().default_search_path
+	_copy_buttons()
 	
 	_scan()
 
@@ -34,11 +28,18 @@ func _ready() -> void:
 # Connections                                                                 #
 ###############################################################################
 
+func _on_rescan_triggered() -> void:
+	for c in vbox.get_children():
+		c.free()
+	
+	_scan()
+
 func _on_size_changed() -> void:
 	._on_size_changed()
 
 func _on_run() -> void:
 	if current_element != null:
+# warning-ignore:return_value_discarded
 		OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", current_element.path], false)
 		get_tree().quit()
 
@@ -51,10 +52,7 @@ func _on_import() -> void:
 	pass
 
 func _on_scan() -> void:
-	for c in vbox.get_children():
-		c.free()
-	
-	_scan()
+	_on_rescan_triggered()
 
 func _on_project_item_clicked(pi: ProjectItem) -> void:
 	var current_time: int = OS.get_ticks_msec()
@@ -73,12 +71,15 @@ func _on_project_item_clicked(pi: ProjectItem) -> void:
 ###############################################################################
 
 func _scan() -> void:
+	var data_path: String = AppManager.cm.config().default_search_path
+	
 	var dir := Directory.new()
 	if dir.open(data_path) != OK:
 		AppManager.logger.error("Unable to open data dir")
 		# TODO show popup or something?
 		return
 	
+# warning-ignore:return_value_discarded
 	dir.list_dir_begin(true, true)
 	
 	var file_name: String = dir.get_next()
@@ -95,10 +96,10 @@ func _scan() -> void:
 			continue
 		
 		var e: ProjectItem = PROJECT_ITEM.instance()
-		vbox.add_child(e)
-		e.label.text = file_name
 		e.path = "%s/%s" % [data_path, file_name]
+# warning-ignore:return_value_discarded
 		e.connect("clicked", self, "_on_project_item_clicked", [e])
+		vbox.add_child(e)
 		
 		file_name = dir.get_next()
 
@@ -107,5 +108,6 @@ func _scan() -> void:
 ###############################################################################
 
 func open_project(path: String) -> void:
+# warning-ignore:return_value_discarded
 	OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", path], false)
 	get_tree().quit()

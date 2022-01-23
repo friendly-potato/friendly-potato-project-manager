@@ -1,9 +1,6 @@
-extends FileDialog
+extends BaseModdedFileDialog
 
-signal finished_selecting(selected_items)
-
-var button: Button
-var tree: Tree
+var search_path: String
 
 var selected_items: Array = []
 
@@ -12,30 +9,8 @@ var selected_items: Array = []
 ###############################################################################
 
 func _ready() -> void:
-	current_dir = AppManager.cm.config().default_search_path
-	
-	var popup_vbox: VBoxContainer = get_vbox()
-	
-	# Modify accept buttons
-	var popup_accept_buttons: HBoxContainer = popup_vbox.get_parent().get_child(2)
-	popup_accept_buttons.get_child(1).hide()
-	button = Button.new()
-	button.text = "Select"
-	button.disabled = true
-	button.connect("pressed", self, "_on_modded_button")
-	popup_accept_buttons.add_child_below_node(popup_accept_buttons.get_child(0), button)
-	
-	# Modify tree view (files/dir display)
-	tree = popup_vbox.get_child(2).get_child(0)
-	if not tree is Tree:
-		AppManager.logger.error("Unable to modify FileDialog:VBox:Tree. " +
-				"Maybe something changed in the builtin FileDialog implementation")
-	else:
-		tree.select_mode = Tree.SELECT_MULTI
-		tree.allow_reselect = true
-		tree.allow_rmb_select = true
-		tree.connect("multi_selected", self, "_on_file_selected")
-		tree.connect("item_rmb_selected", self, "_on_deselected")
+	tree.select_mode = Tree.SELECT_MULTI
+	tree.allow_reselect = true
 	
 	popup_centered_ratio()
 	
@@ -48,7 +23,7 @@ func _ready() -> void:
 # Connections                                                                 #
 ###############################################################################
 
-func _on_file_selected(ti: TreeItem, column: int, selected: bool) -> void:
+func _on_files_selected(ti: TreeItem, column: int, selected: bool) -> void:
 	"""
 	Hack for bypassing Godot's builtin FileDialog selection limits
 	
@@ -81,6 +56,9 @@ func _on_modded_button() -> void:
 # Private functions                                                           #
 ###############################################################################
 
+func _set_current_dir() -> void:
+	current_dir = search_path
+
 func _add_item(text: String) -> void:
 	selected_items.append(text)
 	button.disabled = false
@@ -88,7 +66,7 @@ func _add_item(text: String) -> void:
 func _remove_item(text: String) -> void:
 	selected_items.erase(text)
 	if selected_items.size() == 0:
-		button.disabled == true
+		button.disabled = true
 
 ###############################################################################
 # Public functions                                                            #
