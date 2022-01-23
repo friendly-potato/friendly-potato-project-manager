@@ -2,7 +2,7 @@ extends BaseModdedFileDialog
 
 var search_path: String
 
-var selected_items: Array = []
+var selected_items: Array = [] # Absolute file paths
 
 ###############################################################################
 # Builtin functions                                                           #
@@ -11,6 +11,8 @@ var selected_items: Array = []
 func _ready() -> void:
 	tree.select_mode = Tree.SELECT_MULTI
 	tree.allow_reselect = true
+	
+	tree.connect("item_activated", self, "_on_double_click")
 	
 	popup_centered_ratio()
 	
@@ -29,8 +31,7 @@ func _on_files_selected(ti: TreeItem, column: int, selected: bool) -> void:
 	
 	AKA you cannot multiselect files + directories, only files
 	"""
-	var text: String = ti.get_text(column)
-	AppManager.logger.info(text)
+	var text: String = "%s/%s" % [current_dir, ti.get_text(column)]
 	match selected:
 		true:
 			if selected_items.has(text):
@@ -41,11 +42,23 @@ func _on_files_selected(ti: TreeItem, column: int, selected: bool) -> void:
 		false:
 			_remove_item(text)
 
+func _on_double_click() -> void:
+	"""
+	Clear selected items when we move into another directory otherwise it gets confusing
+	"""
+	get_tree().set_input_as_handled()
+	var text: String = "%s/%s" % [
+		current_dir, tree.get_selected().get_text(tree.get_selected_column())]
+	if Directory.new().dir_exists(text):
+		selected_items.clear()
+	else:
+		emit_signal("finished_selecting", selected_items)
+
 func _on_deselected(pos: Vector2) -> void:
 	var ti: TreeItem = tree.get_item_at_position(pos)
 	var col: int = tree.get_column_at_position(pos)
 	
-	selected_items.erase(ti.get_text(col))
+	_remove_item(ti.get_text(col))
 	ti.deselect(col)
 
 func _on_modded_button() -> void:

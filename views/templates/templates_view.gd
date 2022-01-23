@@ -44,6 +44,7 @@ func _scan() -> void:
 		else:
 			item.store_locally_button.state = StoreLocallyButton.State.START
 		items.add_child(item)
+		item.text_edit.text = PoolStringArray(i.items_to_ignore).join("\n").strip_edges()
 
 func _add_item(path: String) -> Control:
 	var item: TemplateItem = TEMPLATE_ITEM.instance()
@@ -57,7 +58,7 @@ func _add_item(path: String) -> Control:
 	
 	item.parent = self
 	item.path = path
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	item.connect("clicked", self, "_on_item_clicked", [item])
 	
 	return item

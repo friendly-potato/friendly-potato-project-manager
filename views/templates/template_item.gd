@@ -55,14 +55,17 @@ var previous_ignorables_value: String = ""
 ###############################################################################
 
 func _ready() -> void:
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	edit_ignorables.connect("pressed", self, "_on_edit_ignorables")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	$HBoxContainer/IgnorablesContainer/Browse.connect("pressed", self, "_on_ignorables_browse")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	$HBoxContainer/IgnorablesContainer/VBoxContainer/Confirm.connect("pressed", self, "_on_ignorables_confirm")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	$HBoxContainer/IgnorablesContainer/VBoxContainer/Cancel.connect("pressed", self, "_on_ignorables_cancel")
+	
+	text_edit.rect_min_size.x = $HBoxContainer.rect_size.x / 4
+	text_edit.rect_min_size.y = text_edit.rect_min_size.x
 	
 	label = $HBoxContainer/Label
 	_set_label_text(label, path)
@@ -85,13 +88,16 @@ func _on_edit_ignorables() -> void:
 func _on_ignorables_browse() -> void:
 	var popup: BaseModdedFileDialog = load(BROWSE_IGNORABLES_POPUP_PATH).instance()
 	popup.current_dir = path
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	popup.connect("finished_selecting", self, "_on_finished_selecting")
 	
 	add_child(popup)
 
 func _on_finished_selecting(items: Array) -> void:
-	var joined_items: String = PoolStringArray(items).join("\n")
+	var psa := PoolStringArray()
+	for i in items:
+		psa.append(i.replace(path, ""))
+	var joined_items: String = psa.join("\n").strip_edges()
 	text_edit.text = ("%s\n%s" % [text_edit.text, joined_items]).strip_edges()
 
 func _on_ignorables_confirm() -> void:
@@ -102,6 +108,11 @@ func _on_ignorables_confirm() -> void:
 		return
 	
 	previous_ignorables_value = text_edit.text
+	
+	AppManager.cm.config().edit_template(path, {
+		"items_to_ignore": ignorables.ignorables
+	})
+	
 	_toggle_ignorables()
 
 func _on_ignorables_cancel() -> void:
@@ -127,13 +138,12 @@ static func _parse_ignorables(te: TextEdit, path: String) -> ParsedIgnorables:
 		if text.empty():
 			continue
 		
-		if not text.is_rel_path():
+		if not text.is_abs_path():
 			r.register_error(i + 0, text, "File path expected")
 			return r
 		
-		var full_path: String = "%s/%s" % [path, text]
-		if not d.file_exists(full_path):
-			r.register_error(i + 0, full_path, "File does not exist")
+		if (not d.file_exists(text) and not d.dir_exists(text)):
+			r.register_error(i + 0, text, "Item does not exist")
 			return r
 		
 		r.register_ignorable(text)

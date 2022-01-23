@@ -22,15 +22,15 @@ var template_group := ButtonGroup.new()
 ###############################################################################
 
 func _ready() -> void:
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("popup_hide", AppManager, "destroy_node", [self])
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	project_path.connect("text_changed", self, "_on_project_path_changed")
 	
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3/CheckBox.group = button_group
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2/CheckBox.group = button_group
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	$VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer/Button.connect("pressed", self, "_on_browse")
 	
 	project_name.text = AppManager.cm.config().default_new_project_name
@@ -45,9 +45,9 @@ func _ready() -> void:
 	
 	_populate_templates_plugins()
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	create_edit.connect("pressed", self, "_on_create_edit")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	cancel.connect("pressed", AppManager, "destroy_node", [self])
 	
 	popup_centered_ratio()
@@ -58,7 +58,7 @@ func _ready() -> void:
 
 func _on_browse() -> void:
 	var popup: FileDialog = parent.create_dir_selector()
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	popup.connect("dir_selected", self, "_on_dir_selected")
 	popup.current_dir = AppManager.cm.config().default_search_path
 	
@@ -115,10 +115,10 @@ func _on_create_edit() -> void:
 	match os:
 		"windows":
 			# This is so gross
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			OS.execute("type", ["nul", ">", "%s/project.godot" % project_path.text])
 		"x11", "osx":
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			OS.execute("touch", ["%s/project.godot" % project_path.text])
 	
 	if template != "Default":
@@ -127,14 +127,21 @@ func _on_create_edit() -> void:
 			AppManager.logger.error("Unable to open template: %s" % template)
 			return
 
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		t_dir.list_dir_begin(true, false)
+		
+		var config_data := AppManager.cm.config().find_template(template)
 
 		file_name = t_dir.get_next()
 		while file_name != "":
 			if file_name in [".git", ".import", "project.godot"]:
 				file_name = t_dir.get_next()
 				continue
+			
+			if template in config_data.items_to_ignore:
+				file_name = t_dir.get_next()
+				continue
+			
 			match os:
 				"windows":
 					FileSystem.rec_copy_windows("%s/%s" % [template, file_name], "%s/%s" % [project_path.text, file_name])
@@ -146,15 +153,15 @@ func _on_create_edit() -> void:
 
 	if selected_plugins.size() > 0:
 		if not dir.dir_exists("%s/addons" % project_path.text):
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			dir.make_dir("%s/addons" % project_path.text)
 
 		for i in selected_plugins:
 			match os:
 				"windows":
-					FileSystem.rec_copy_windows(i, "%s/addons" % project_path.text)
+					FileSystem.rec_copy_windows(i, "%s/addons/%s" % [project_path.text, i.get_file()])
 				"x11", "osx":
-					FileSystem.rec_copy_linux(i, "%s/addons" % project_path.text)
+					FileSystem.rec_copy_linux(i, "%s/addons/%s" % [project_path.text, i.get_file()])
 		
 		AppManager.logger.debug("Finished copying templates")
 	

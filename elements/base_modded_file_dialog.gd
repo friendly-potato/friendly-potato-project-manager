@@ -7,11 +7,14 @@ signal finished_selecting(selected_item)
 var button: Button
 var tree: Tree
 
+var original_dir: String
+
 ###############################################################################
 # Builtin functions                                                           #
 ###############################################################################
 
 func _ready() -> void:
+	original_dir = current_dir
 	var popup_vbox: VBoxContainer = get_vbox()
 	
 	# Modify accept buttons
@@ -20,7 +23,7 @@ func _ready() -> void:
 	button = Button.new()
 	button.text = "Select"
 	button.disabled = true
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	button.connect("pressed", self, "_on_modded_button")
 	popup_accept_buttons.add_child_below_node(popup_accept_buttons.get_child(0), button)
 
@@ -31,11 +34,11 @@ func _ready() -> void:
 				"Maybe something changed in the builtin FileDialog implementation")
 	else:
 		tree.allow_rmb_select = true
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		tree.connect("item_selected", self, "_on_file_selected")
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		tree.connect("multi_selected", self, "_on_files_selected")
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		tree.connect("item_rmb_selected", self, "_on_deselected")
 
 ###############################################################################
