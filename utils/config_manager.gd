@@ -131,12 +131,13 @@ class Loadable:
 	func _to_string() -> String:
 		return get_as_json()
 
-class ConfigItem extends Loadable:
+class LoadableCopy extends Loadable:
 	# Whether the item is copied to the user data directory or just
 	# referenced somewhere else in the file system
 	var is_local_copy := false
+	var old_path: String
 
-class Template extends ConfigItem:
+class Template extends LoadableCopy:
 	"""
 	Copying a template only goes 1 level deep. Files and directories are both copied.
 	"""
@@ -148,12 +149,13 @@ class Template extends ConfigItem:
 		type = LoadableType.TEMPLATE
 		
 		path = p_path
+		old_path = p_path
 		items_to_ignore = p_items_to_ignore
 	
 	func duplicate() -> Template:
 		return _duplicate(self)
 
-class Plugin extends ConfigItem:
+class Plugin extends LoadableCopy:
 	"""
 	Plugins must be located in a folder. That folder is then recursively copied.
 	"""
@@ -161,6 +163,7 @@ class Plugin extends ConfigItem:
 		type = LoadableType.PLUGIN
 		
 		path = p_path
+		old_path = p_path
 	
 	func duplicate() -> Plugin:
 		return _duplicate(self)
@@ -253,7 +256,7 @@ class ConfigData extends Loadable:
 		Find a loadable by path and replace the data in it via key-value pair
 		"""
 		var l = _find_matching_loadable("path", path, list)
-		if l == FAILED:
+		if (typeof(l) == TYPE_INT and l == FAILED):
 			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
 			return
 		
@@ -270,6 +273,20 @@ class ConfigData extends Loadable:
 		# TODO check to see if this actually changes anything
 		for key in data.keys():
 			l.set(key, data[key])
+	
+	func remove_template(path: String) -> void:
+		_remove_loadable(path, templates)
+	
+	func remove_plugin(path: String) -> void:
+		_remove_loadable(path, plugins)
+	
+	func _remove_loadable(path: String, list: Array) -> void:
+		var l = _find_matching_loadable("path", path, list)
+		if (typeof(l) == TYPE_INT and l == FAILED):
+			AppManager.logger.error(LOADABLE_NOT_FOUND_ERROR)
+			return
+		
+		list.erase(l)
 	
 	func _find_matching_loadable(key: String, val, list: Array):
 		"""

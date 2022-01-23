@@ -22,6 +22,13 @@ func _ready() -> void:
 # Connections                                                                 #
 ###############################################################################
 
+func _on_template_item_clicked(ti: TemplateItem) -> void:
+	if current_element != null:
+		current_element.before_color = current_element.changed_color
+		current_element.unhover()
+	current_element = ti
+	current_element.before_color = current_element.after_color
+
 func _on_add() -> void:
 	var popup := create_dir_selector()
 	popup.connect("dir_selected", self, "_on_dir_selected")
@@ -36,6 +43,7 @@ func _on_dir_selected(dir: String) -> void:
 func _on_remove() -> void:
 	if current_element == null:
 		return
+	AppManager.cm.config().remove_template(current_element.text)
 	
 	current_element.queue_free()
 
@@ -44,9 +52,10 @@ func _on_remove() -> void:
 ###############################################################################
 
 func _create_template_item(path: String) -> Control:
-	var item = TEMPLATE_ITEM.instance()
+	var item: TemplateItem = TEMPLATE_ITEM.instance()
 	item.parent = self
 	item.text = path
+	item.connect("clicked", self, "_on_template_item_clicked", [item])
 	
 	return item
 

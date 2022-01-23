@@ -5,3 +5,14 @@
 
 [node name="PluginsView" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+
+[node name="Add" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="0"]
+margin_right = 100.0
+margin_bottom = 20.0
+text = "Add"
+
+[node name="Remove" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="1"]
+margin_top = 24.0
+margin_right = 100.0
+margin_bottom = 44.0
+text = "Remove"

@@ -1,5 +1,7 @@
 extends WindowDialog
 
+const POPUP_ITEM: PackedScene = preload("res://views/projects/new-project-popup/popup_item.tscn")
+
 var parent: BaseView
 
 onready var project_name: LineEdit = $VBoxContainer/ScrollContainer/VBoxContainer/ProjectLineEdit
@@ -21,16 +23,15 @@ var template_group := ButtonGroup.new()
 
 func _ready() -> void:
 	connect("popup_hide", AppManager, "destroy_node", [self])
+	project_path.connect("text_changed", self, "_on_project_path_changed")
 	
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL3/CheckBox.group = button_group
 	$VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/GL2/CheckBox.group = button_group
 	
 	$VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer/Button.connect("pressed", self, "_on_browse")
 	
-	var popup_item: PackedScene = load("res://views/projects/new-project-popup/popup_item.tscn")
-	
 	# Add default (empty) project template first
-	var default_template = popup_item.instance()
+	var default_template = POPUP_ITEM.instance()
 	default_template.text = "Default"
 	default_template.initial_pressed_value = true
 	default_template.button_group = template_group
@@ -72,13 +73,26 @@ func _on_create_edit() -> void:
 		if p.checked():
 			selected_plugins.append(p.text)
 	
-	AppManager.logger.info(str(selected_plugins))
-	AppManager.logger.info(template)
-	
 	# TODO currently the folder must exist beforehand
 	var dir := Directory.new()
 	if not dir.dir_exists(project_path.text):
 		AppManager.logger.error("Path does not exist: %s\nDeclining to implicitly create new directory" % project_path.text)
+		return
+	
+	if dir.open(project_path.text) != OK:
+		AppManager.logger.error("Unable to check proposed project directory")
+		return
+	
+	dir.list_dir_begin(true, false)
+	
+	var count: int = 0
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		count += 1
+		file_name = dir.get_next()
+	
+	if count != 0:
+		AppManager.logger.error("Declining to create project in non-empty directory")
 		return
 	
 	# Execute
@@ -86,12 +100,12 @@ func _on_create_edit() -> void:
 	#   1. project.godot
 	#   2. templates (if applicable)
 	#   3. plugins (if applicable)
-	var os: String = OS.get_name()
+	var os: String = OS.get_name().to_lower()
 	match os:
-		"Windows":
+		"windows":
 			# This is so gross
 			OS.execute("type", ["nul", ">", "%s/project.godot" % project_path.text])
-		"X11", "OSX":
+		"x11", "osx":
 			OS.execute("touch", ["%s/project.godot" % project_path.text])
 	
 	if template != "Default":
@@ -102,14 +116,19 @@ func _on_create_edit() -> void:
 
 		t_dir.list_dir_begin(true, false)
 
-		var file_name: String = dir.get_next()
+		file_name = t_dir.get_next()
 		while file_name != "":
+			if file_name in [".git", ".import", "project.godot"]:
+				file_name = t_dir.get_next()
+				continue
 			match os:
-				"Windows":
-					_rec_copy_windows(file_name, project_path.text)
-				"X11", "OSX":
-					_rec_copy_linux(file_name, project_path.text)
-			file_name = dir.get_next()
+				"windows":
+					_rec_copy_windows("%s/%s" % [template, file_name], "%s/%s" % [project_path.text, file_name])
+				"x11", "osx":
+					_rec_copy_linux("%s/%s" % [template, file_name], project_path.text)
+			file_name = t_dir.get_next()
+		
+		AppManager.logger.debug("Finished copying templates")
 
 	if selected_plugins.size() > 0:
 		if not dir.dir_exists("%s/addons" % project_path.text):
@@ -117,10 +136,12 @@ func _on_create_edit() -> void:
 
 		for i in selected_plugins:
 			match os:
-				"Windows":
+				"windows":
 					_rec_copy_windows(i, "%s/addons" % project_path.text)
-				"X11", "OSX":
+				"x11", "osx":
 					_rec_copy_linux(i, "%s/addons" % project_path.text)
+		
+		AppManager.logger.debug("Finished copying templates")
 	
 	parent.open_project(project_path.text)
 
@@ -128,6 +149,19 @@ func _on_create_edit() -> void:
 
 func _on_dir_selected(dir: String) -> void:
 	project_path.text = dir
+	_on_project_path_changed(dir)
+
+func _on_project_path_changed(text: String) -> void:
+	if text.empty():
+		create_edit.disabled = true
+		return
+	
+	var dir := Directory.new()
+	if not dir.dir_exists(text):
+		create_edit.disabled = true
+		return
+	
+	create_edit.disabled = false
 
 ###############################################################################
 # Private functions                                                           #
@@ -150,22 +184,20 @@ func _populate_templates_plugins() -> void:
 	for c in plugins.get_children():
 		c.free()
 	
-	var popup_item: PackedScene = load("res://views/projects/new-project-popup/popup_item.tscn")
-	
 	for t in AppManager.cm.config().templates:
-		var item = popup_item.instance()
+		var item = POPUP_ITEM.instance()
 		item.text = t.path
 		item.button_group = template_group
 		templates.add_child(item)
 	
 	for p in AppManager.cm.config().plugins:
-		var item = popup_item.instance()
+		var item = POPUP_ITEM.instance()
 		item.text = p.path
 		plugins.add_child(item)
 
 func _rec_copy_windows(dir: String, path: String) -> void:
 	# https://stackoverflow.com/questions/13314433/batch-file-to-copy-directories-recursively
-	OS.execute("xcopy", ["/e", "/k", "/h", "/i", dir, path])
+	OS.execute("CMD.exe", ["/c", "robocopy %s %s /e " % [dir, path]])
 
 func _rec_copy_linux(dir: String, path: String) -> void:
 	OS.execute("cp", ["-r", dir, path])

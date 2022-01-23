@@ -68,6 +68,11 @@ func _ready() -> void:
 # Connections                                                                 #
 ###############################################################################
 
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			emit_signal("clicked")
+
 func _on_edit_ignorables() -> void:
 	_toggle_ignorables()
 

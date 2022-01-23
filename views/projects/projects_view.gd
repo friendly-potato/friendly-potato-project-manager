@@ -4,7 +4,7 @@ const PROJECT_ITEM: PackedScene = preload("res://views/projects/project_item.tsc
 const NEW_PROJECT_POPUP: PackedScene = preload("res://views/projects/new-project-popup/new_project_popup.tscn")
 
 # TODO testing
-var data_path: String = "C:/Users/theaz/dev"
+var data_path: String
 
 ###############################################################################
 # Builtin functions                                                           #
@@ -25,6 +25,8 @@ func _ready() -> void:
 	
 	while not AppManager.cm.finished_loading:
 		yield(get_tree(), "idle_frame")
+	
+	data_path = AppManager.cm.config().default_search_path
 	
 	_scan()
 

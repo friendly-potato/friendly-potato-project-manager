@@ -39,42 +39,57 @@ margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="FilterContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
-margin_right = 114.0
-margin_bottom = 572.0
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/FilterContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 107.0
-margin_bottom = 565.0
-rect_min_size = Vector2( 100, 0 )
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.25
-
-[node name="Filters" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/FilterContainer/ScrollContainer"]
-margin_right = 100.0
-margin_bottom = 558.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ConfigContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 118.0
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 1024.0
 margin_bottom = 572.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/ConfigContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/HSplitContainer"]
+margin_right = 164.0
+margin_bottom = 572.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/HSplitContainer/VBoxContainer"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Filters"
+align = 1
+
+[node name="FilterContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 572.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Filters" type="Tree" parent="VBoxContainer/HBoxContainer/HSplitContainer/VBoxContainer/FilterContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 899.0
+margin_right = 157.0
+margin_bottom = 547.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+hide_root = true
+
+[node name="ConfigContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/HSplitContainer"]
+margin_left = 176.0
+margin_right = 1024.0
+margin_bottom = 572.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/HSplitContainer/ConfigContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 841.0
 margin_bottom = 565.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Configs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ConfigContainer/ScrollContainer"]
-margin_right = 892.0
+[node name="Configs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/HSplitContainer/ConfigContainer/ScrollContainer"]
+margin_right = 834.0
 margin_bottom = 558.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
