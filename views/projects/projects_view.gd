@@ -39,9 +39,7 @@ func _on_size_changed() -> void:
 
 func _on_run() -> void:
 	if current_element != null:
-# warning-ignore:return_value_discarded
-		OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", current_element.path], false)
-		get_tree().quit()
+		_run(current_element.path)
 
 func _on_new() -> void:
 	var popup: WindowDialog = NEW_PROJECT_POPUP.instance()
@@ -79,7 +77,7 @@ func _scan() -> void:
 		# TODO show popup or something?
 		return
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	dir.list_dir_begin(true, true)
 	
 	var file_name: String = dir.get_next()
@@ -97,17 +95,20 @@ func _scan() -> void:
 		
 		var e: ProjectItem = PROJECT_ITEM.instance()
 		e.path = "%s/%s" % [data_path, file_name]
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		e.connect("clicked", self, "_on_project_item_clicked", [e])
 		vbox.add_child(e)
 		
 		file_name = dir.get_next()
+
+func _run(path: String) -> void:
+	# warning-ignore:return_value_discarded
+	OS.execute(AppManager.cm.config().default_godot_executable, ["-e", "--path", path], false)
+	get_tree().quit()
 
 ###############################################################################
 # Public functions                                                            #
 ###############################################################################
 
 func open_project(path: String) -> void:
-# warning-ignore:return_value_discarded
-	OS.execute("C:/Users/theaz/apps/Godot_v3.4.2-stable_win64.exe", ["-e", "--path", path], false)
-	get_tree().quit()
+	_run(path)

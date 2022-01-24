@@ -41,6 +41,11 @@ func _ready() -> void:
 	
 	# warning-ignore:return_value_discarded
 	tabs.connect("tab_changed", self, "_on_tab_changed")
+	
+	if AppManager.cm.config().default_godot_executable.empty():
+		var popup: MissingDataPopup = load("res://views/missing-data-popup/missing_data_popup.tscn").instance()
+		
+		add_child(popup)
 
 ###############################################################################
 # Connections                                                                 #

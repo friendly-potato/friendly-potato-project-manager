@@ -1,0 +1,137 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://views/missing-data-popup/missing_data_popup.gd" type="Script" id=1]
+[ext_resource path="res://assets/main.theme" type="Theme" id=2]
+
+[node name="MissingDataPopup" type="WindowDialog"]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+window_title = "Missing Data"
+resizable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProjectNameContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1004.0
+margin_bottom = 26.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ProjectNameContainer"]
+margin_right = 499.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+text = "Default project name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ProjectNameContainer"]
+margin_left = 505.0
+margin_right = 1004.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ProjectNameContainer/HBoxContainer"]
+margin_right = 499.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="DirectoryContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 32.0
+margin_right = 1004.0
+margin_bottom = 58.0
+
+[node name="Label" type="Label" parent="VBoxContainer/DirectoryContainer"]
+margin_right = 499.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+text = "Default directory"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/DirectoryContainer"]
+margin_left = 505.0
+margin_right = 1004.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/DirectoryContainer/HBoxContainer"]
+margin_right = 428.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="Browse" type="Button" parent="VBoxContainer/DirectoryContainer/HBoxContainer"]
+margin_left = 434.0
+margin_right = 499.0
+margin_bottom = 26.0
+text = "Browse"
+
+[node name="ExeContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 64.0
+margin_right = 1004.0
+margin_bottom = 90.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ExeContainer"]
+margin_right = 499.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+text = "Godot executable"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ExeContainer"]
+margin_left = 505.0
+margin_right = 1004.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ExeContainer/HBoxContainer"]
+margin_right = 428.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="Browse" type="Button" parent="VBoxContainer/ExeContainer/HBoxContainer"]
+margin_left = 434.0
+margin_right = 499.0
+margin_bottom = 26.0
+text = "Browse"
+
+[node name="SkipLabel" type="Label" parent="VBoxContainer"]
+visible = false
+margin_top = 309.0
+margin_right = 1004.0
+margin_bottom = 335.0
+size_flags_vertical = 10
+text = "You need to provide a Godot executable location or else the program will not function as expected."
+align = 1
+valign = 2
+autowrap = true
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 554.0
+margin_right = 1004.0
+margin_bottom = 580.0
+size_flags_vertical = 10
+
+[node name="Accept" type="Button" parent="VBoxContainer/ButtonContainer"]
+margin_left = 218.0
+margin_right = 280.0
+margin_bottom = 26.0
+size_flags_horizontal = 6
+text = "Accept"
+
+[node name="Skip" type="Button" parent="VBoxContainer/ButtonContainer"]
+margin_left = 732.0
+margin_right = 776.0
+margin_bottom = 26.0
+size_flags_horizontal = 6
+text = "Skip"

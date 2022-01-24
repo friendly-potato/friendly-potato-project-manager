@@ -62,12 +62,4 @@ func _copy_buttons() -> void:
 ###############################################################################
 
 func create_dir_selector(mode: int = FileDialog.MODE_OPEN_DIR) -> FileDialog:
-	var popup := FileDialog.new()
-	# Only allow for directories to be selected
-	popup.mode = mode
-	popup.access = FileDialog.ACCESS_FILESYSTEM
-	popup.show_hidden_files = true
-# warning-ignore:return_value_discarded
-	popup.connect("popup_hide", AppManager, "destroy_node", [popup])
-	
-	return popup
+	return AppManager.create_dir_select(mode)

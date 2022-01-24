@@ -177,10 +177,13 @@ class ConfigData extends Loadable:
 	var plugins: Array = [] # Plugin
 	
 	var default_new_project_name: String
+	var known_projects: Array = [] # String paths
 	
 	var default_search_path: String
 	var show_full_file_paths := false
-	var known_projects: Array = [] # String paths
+	
+	var godot_executables: Array = [] # String paths
+	var default_godot_executable: String = "" # Path
 	
 	func _init() -> void:
 		path = "root"

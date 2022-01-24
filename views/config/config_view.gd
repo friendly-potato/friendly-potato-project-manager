@@ -39,21 +39,21 @@ func _ready() -> void:
 	while not AppManager.cm.finished_loading:
 		yield(get_tree(), "idle_frame")
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	search.connect("text_changed", self, "_on_text_changed")
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	filters.connect("item_selected", self, "_on_item_selected")
 	
 	var root: TreeItem = filters.create_item()
 	
-# warning-ignore:unused_variable
+	# warning-ignore:unused_variable
 	var general := _create_tree_item(root, GENERAL)
-# warning-ignore:unused_variable
+	# warning-ignore:unused_variable
 	var projects := _create_tree_item(root, PROJECTS)
-# warning-ignore:unused_variable
+	# warning-ignore:unused_variable
 	var templates := _create_tree_item(root, TEMPLATES)
-# warning-ignore:unused_variable
+	# warning-ignore:unused_variable
 	var plugins := _create_tree_item(root, PLUGINS)
 	
 	var advanced := _create_tree_item(root, ADVANCED, false)
@@ -142,18 +142,18 @@ func _create_config_item(id: String, value) -> ConfigItem:
 		TYPE_STRING, TYPE_INT, TYPE_REAL:
 			payload.type = ConfigItem.ConfigType.TEXT
 			payload.value = value
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			ci.connect("changed_typed", self, "_on_config_item_changed_typed")
 		TYPE_BOOL:
 			payload.type = ConfigItem.ConfigType.CHECK
 			payload.value = value
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			ci.connect("changed", self, "_on_config_item_changed")
 		TYPE_ARRAY:
 			payload.type = ConfigItem.ConfigType.TEXT_AREA
 			var joined := PoolStringArray(value).join("\n").strip_edges()
 			payload.value = joined
-# warning-ignore:return_value_discarded
+			# warning-ignore:return_value_discarded
 			ci.connect("changed", self, "_on_config_item_changed")
 		TYPE_DICTIONARY:
 			pass

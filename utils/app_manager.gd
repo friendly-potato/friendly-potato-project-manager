@@ -22,7 +22,7 @@ var env: String = ENVS.DEFAULT
 ###############################################################################
 
 func _ready() -> void:
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	self.connect("tree_exiting", self, "_on_tree_exiting")
 
 	var system_env = OS.get_environment(ENV_VAR_NAME)
@@ -55,6 +55,17 @@ func _on_tree_exiting() -> void:
 ###############################################################################
 # Public functions                                                            #
 ###############################################################################
+
+func create_dir_select(mode: int = FileDialog.MODE_OPEN_DIR) -> FileDialog:
+	var popup := FileDialog.new()
+	# Only allow for directories to be selected
+	popup.mode = mode
+	popup.access = FileDialog.ACCESS_FILESYSTEM
+	popup.show_hidden_files = true
+	# warning-ignore:return_value_discarded
+	popup.connect("popup_hide", AppManager, "destroy_node", [popup])
+	
+	return popup
 
 func destroy_node(n: Node) -> void:
 	n.queue_free()
