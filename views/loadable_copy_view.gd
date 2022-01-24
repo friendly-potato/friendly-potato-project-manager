@@ -21,14 +21,16 @@ func _ready() -> void:
 
 func _on_item_clicked(item: BaseHoverElement) -> void:
 	if current_element != null:
-		current_element.before_color = current_element.after_color
+		current_element.before_color = current_element.changed_color
 		current_element.unhover()
+		current_element = null
+		return
 	current_element = item
 	current_element.before_color = current_element.after_color
 
 func _on_add() -> void:
 	var popup := create_dir_selector()
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	popup.connect("dir_selected", self, "_on_dir_selected")
 	popup.current_dir = AppManager.cm.config().default_search_path
 	

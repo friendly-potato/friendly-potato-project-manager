@@ -37,7 +37,9 @@ func _on_modded_button() -> void:
 	emit_signal("finished_selecting", "%s/%s" %
 		[
 			current_dir,
-			current_item
+			# If triggered from inside the selected directory, the directory name will be doubled
+			# Check for the doubling
+			current_item if current_item != current_dir.get_file() else ""
 		])
 	queue_free()
 

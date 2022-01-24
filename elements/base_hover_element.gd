@@ -7,6 +7,7 @@ signal clicked()
 var panel: StyleBoxFlat
 var after_color: Color
 var before_color: Color
+var changed_color: Color
 
 var label: Label
 
@@ -17,11 +18,11 @@ var path: String
 ###############################################################################
 
 func _ready() -> void:
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("mouse_entered", self, "_on_mouse_entered")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("mouse_exited", self, "_on_mouse_exited")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("gui_input", self, "_on_gui_input")
 	
 	panel = get("custom_styles/panel").duplicate(true)
@@ -30,6 +31,8 @@ func _ready() -> void:
 	before_color.a *= 0.5
 	panel.bg_color = before_color
 	set("custom_styles/panel", panel)
+	
+	changed_color = before_color
 
 ###############################################################################
 # Connections                                                                 #
