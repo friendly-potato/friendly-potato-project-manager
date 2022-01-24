@@ -231,6 +231,13 @@ size_flags_horizontal = 6
 disabled = true
 text = "Create & Edit"
 
+[node name="Create" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 95.0
+margin_bottom = 20.0
+size_flags_horizontal = 6
+disabled = true
+text = "Create Only"
+
 [node name="Cancel" type="Button" parent="VBoxContainer/HBoxContainer"]
 margin_left = 102.0
 margin_right = 156.0

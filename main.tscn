@@ -58,6 +58,7 @@ tab_align = 0
 drag_to_rearrange_enabled = true
 
 [node name="Projects" type="Tabs" parent="Control/VBoxContainer/MarginContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 7.5
@@ -101,7 +102,6 @@ margin_bottom = -7.5
 [node name="ConfigView" parent="Control/VBoxContainer/MarginContainer/TabContainer/Config" instance=ExtResource( 2 )]
 
 [node name="About" type="Tabs" parent="Control/VBoxContainer/MarginContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 7.5
@@ -142,23 +142,51 @@ margin_right = 979.0
 margin_bottom = 495.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer"]
-margin_right = 30.0
+margin_right = 969.0
+margin_bottom = 485.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Authors" type="HBoxContainer" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer"]
+margin_right = 969.0
 margin_bottom = 26.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer"]
-margin_right = 30.0
-margin_bottom = 26.0
-
-[node name="Left" type="Label" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
+[node name="Left" type="Label" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/Authors"]
+margin_right = 481.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
+text = "Author"
 
-[node name="Right" type="Label" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_left = 18.0
-margin_right = 30.0
+[node name="Right" type="Label" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/Authors"]
+margin_left = 487.0
+margin_right = 969.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
+text = "Timothy Yuen"
+autowrap = true
+
+[node name="Repository" type="HBoxContainer" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 969.0
+margin_bottom = 82.0
+
+[node name="Left" type="Label" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/Repository"]
+margin_top = 12.0
+margin_right = 481.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+text = "Repository"
+
+[node name="TextEdit" type="TextEdit" parent="Control/VBoxContainer/MarginContainer/TabContainer/About/VBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/Repository"]
+margin_left = 487.0
+margin_right = 969.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "https://github.com/friendly-potato/friendly-potato-project-manager"
+readonly = true
+wrap_enabled = true
 
 [node name="AppNameContainer" type="MarginContainer" parent="Control"]
 anchor_right = 1.0

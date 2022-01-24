@@ -236,6 +236,10 @@ class ConfigData extends Loadable:
 	func duplicate() -> ConfigData:
 		return _duplicate(self)
 	
+	func add_known_project(path: String) -> void:
+		if not known_projects.has(path):
+			known_projects.append(path)
+	
 	func add_template(
 			path: String,
 			items_to_ignore: Array = []) -> void:
@@ -337,10 +341,10 @@ class ConfigData extends Loadable:
 		var output: Array = []
 		match OS.get_name().to_lower():
 			"windows":
-# warning-ignore:return_value_discarded
+				# warning-ignore:return_value_discarded
 				OS.execute("echo", ["%HOMEDRIVE%%HOMEPATH%"], true, output)
 			"osx", "x11":
-# warning-ignore:return_value_discarded
+				# warning-ignore:return_value_discarded
 				OS.execute("echo", ["$HOME"], true, output)
 		if output.size() == 1:
 			return FileSystem.strip_drive(output[0].strip_edges())

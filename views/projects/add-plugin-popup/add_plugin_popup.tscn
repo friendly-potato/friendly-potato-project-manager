@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://views/projects/add-plugin-popup/add_plugin_popup.gd" type="Script" id=1]
+
+[node name="AddPluginPopup" type="WindowDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+window_title = "Add Plugin"
+resizable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+margin_right = 1004.0
+margin_bottom = 556.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+margin_right = 1004.0
+margin_bottom = 556.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 560.0
+margin_right = 1004.0
+margin_bottom = 580.0
+size_flags_vertical = 8
+
+[node name="Cancel" type="Button" parent="VBoxContainer/ButtonContainer"]
+margin_left = 727.0
+margin_right = 781.0
+margin_bottom = 20.0
+size_flags_horizontal = 6
+text = "Cancel"

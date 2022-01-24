@@ -9,6 +9,7 @@ script = ExtResource( 3 )
 [node name="Run" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="0"]
 margin_right = 100.0
 margin_bottom = 20.0
+disabled = true
 text = "Run"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="1"]
@@ -33,3 +34,15 @@ margin_top = 80.0
 margin_right = 100.0
 margin_bottom = 100.0
 text = "Scan"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="5"]
+margin_top = 104.0
+margin_right = 100.0
+margin_bottom = 108.0
+
+[node name="AddPlugin" type="Button" parent="VBoxContainer/HBoxContainer/ButtonScroll/Buttons" index="6"]
+margin_top = 112.0
+margin_right = 100.0
+margin_bottom = 132.0
+disabled = true
+text = "Add Plugin"

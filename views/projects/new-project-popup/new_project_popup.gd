@@ -8,6 +8,7 @@ onready var project_name: LineEdit = $VBoxContainer/ScrollContainer/VBoxContaine
 onready var project_path: LineEdit = $VBoxContainer/ScrollContainer/VBoxContainer/ProjectPathContainer/ProjectPathLineEdit
 
 onready var create_edit: Button = $VBoxContainer/HBoxContainer/CreateEdit
+onready var create: Button = $VBoxContainer/HBoxContainer/Create
 onready var cancel: Button = $VBoxContainer/HBoxContainer/Cancel
 
 onready var templates: VBoxContainer = $VBoxContainer/ScrollContainer/VBoxContainer/TemplatesContainer/Templates
@@ -48,6 +49,8 @@ func _ready() -> void:
 	# warning-ignore:return_value_discarded
 	create_edit.connect("pressed", self, "_on_create_edit")
 	# warning-ignore:return_value_discarded
+	create.connect("pressed", self, "_on_create")
+	# warning-ignore:return_value_discarded
 	cancel.connect("pressed", AppManager, "destroy_node", [self])
 	
 	popup_centered_ratio()
@@ -65,7 +68,7 @@ func _on_browse() -> void:
 	add_child(popup)
 	popup.popup_centered_ratio()
 
-func _on_create_edit() -> void:
+func _on_create() -> void:
 	"""
 	Creates the project in the following order
 	  1. project.godot
@@ -93,7 +96,7 @@ func _on_create_edit() -> void:
 		AppManager.logger.error("Unable to check proposed project directory")
 		return
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	dir.list_dir_begin(true, false)
 	
 	var count: int = 0
@@ -105,12 +108,7 @@ func _on_create_edit() -> void:
 	if count != 0:
 		AppManager.logger.error("Declining to create project in non-empty directory")
 		return
-	
-	# Execute
-	# Execution order:
-	#   1. project.godot
-	#   2. templates (if applicable)
-	#   3. plugins (if applicable)
+
 	var os: String = OS.get_name().to_lower()
 	match os:
 		"windows":
@@ -148,6 +146,12 @@ func _on_create_edit() -> void:
 		
 		AppManager.logger.debug("Finished copying templates")
 	
+	AppManager.cm.config().add_known_project(project_path.text)
+	AppManager.sb.broadcast_rescan_triggered()
+
+func _on_create_edit() -> void:
+	_on_create()
+	
 	parent.open_project(project_path.text)
 
 	queue_free()
@@ -159,14 +163,17 @@ func _on_dir_selected(dir: String) -> void:
 func _on_project_path_changed(text: String) -> void:
 	if text.empty():
 		create_edit.disabled = true
+		create.disabled = true
 		return
 	
 	var dir := Directory.new()
 	if not dir.dir_exists(text):
 		create_edit.disabled = true
+		create.disabled = true
 		return
 	
 	create_edit.disabled = false
+	create.disabled = false
 
 ###############################################################################
 # Private functions                                                           #
