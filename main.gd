@@ -32,14 +32,14 @@ func _ready() -> void:
 	
 	vertical_name_version.text = normal_name_version.text
 	
-# warning-ignore:narrowing_conversion
+	# warning-ignore:narrowing_conversion
 	initial_app_name_label_length = normal_name_version.rect_size.x
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().root.connect("size_changed", self, "_on_size_changed")
 	_on_size_changed()
 	
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	tabs.connect("tab_changed", self, "_on_tab_changed")
 
 ###############################################################################

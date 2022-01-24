@@ -2,7 +2,7 @@ extends BaseModdedFileDialog
 
 const PLUGIN_CFG: String = "plugin.cfg"
 
-var current_item: TreeItem
+var current_item: String
 
 ###############################################################################
 # Builtin functions                                                           #
@@ -19,13 +19,13 @@ func _ready() -> void:
 
 func _on_file_selected() -> void:
 	var ti := tree.get_selected()
-	current_item = ti
+	current_item = ti.get_text(tree.get_selected_column())
 
 	var dir := Directory.new()
 	if not dir.file_exists("%s/%s/%s" %
 			[
 				current_dir,
-				current_item.get_text(tree.get_selected_column()),
+				current_item,
 				PLUGIN_CFG
 			]):
 		button.disabled = true
@@ -37,7 +37,7 @@ func _on_modded_button() -> void:
 	emit_signal("finished_selecting", "%s/%s" %
 		[
 			current_dir,
-			current_item.get_text(tree.get_selected_column())
+			current_item
 		])
 	queue_free()
 

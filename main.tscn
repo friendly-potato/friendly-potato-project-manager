@@ -1476,8 +1476,8 @@ margin_right = 1004.0
 margin_bottom = 26.0
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer"]
-margin_right = 1004.0
-margin_bottom = 580.0
+margin_right = 1580.0
+margin_bottom = 880.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -1485,8 +1485,8 @@ __meta__ = {
 }
 
 [node name="TabContainer" type="TabContainer" parent="Control/VBoxContainer/MarginContainer"]
-margin_right = 1004.0
-margin_bottom = 580.0
+margin_right = 1580.0
+margin_bottom = 880.0
 tab_align = 0
 drag_to_rearrange_enabled = true
 
@@ -1604,8 +1604,8 @@ __meta__ = {
 }
 
 [node name="NameVersion" type="Label" parent="Control/AppNameContainer"]
-margin_left = 849.0
-margin_right = 1004.0
+margin_left = 1425.0
+margin_right = 1580.0
 margin_bottom = 26.0
 size_flags_horizontal = 8
 text = "App name and version"

@@ -47,8 +47,12 @@ func _on_double_click() -> void:
 	Clear selected items when we move into another directory otherwise it gets confusing
 	"""
 	get_tree().set_input_as_handled()
+	var ti := tree.get_selected()
+	if ti == null:
+		return
 	var text: String = "%s/%s" % [
-		current_dir, tree.get_selected().get_text(tree.get_selected_column())]
+		current_dir, ti.get_text(tree.get_selected_column())]
+	AppManager.logger.trace(text)
 	if Directory.new().dir_exists(text):
 		selected_items.clear()
 	else:

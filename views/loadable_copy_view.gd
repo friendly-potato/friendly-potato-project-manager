@@ -36,6 +36,8 @@ func _on_add() -> void:
 	popup.popup_centered_ratio()
 
 func _on_dir_selected(dir: String) -> void:
+	dir = FileSystem.strip_drive(dir)
+	
 	items.add_child(_add_item(dir))
 	_add_to_config(dir)
 

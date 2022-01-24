@@ -44,7 +44,9 @@ func _scan() -> void:
 		else:
 			item.store_locally_button.state = StoreLocallyButton.State.START
 		items.add_child(item)
+		
 		item.text_edit.text = PoolStringArray(i.items_to_ignore).join("\n").strip_edges()
+		item.previous_ignorables_value = item.text_edit.text
 
 func _add_item(path: String) -> Control:
 	var item: TemplateItem = TEMPLATE_ITEM.instance()

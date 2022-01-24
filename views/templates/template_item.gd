@@ -94,9 +94,12 @@ func _on_ignorables_browse() -> void:
 	add_child(popup)
 
 func _on_finished_selecting(items: Array) -> void:
+	"""
+	Items are all absolute paths. These need to be converted to relative paths
+	"""
 	var psa := PoolStringArray()
 	for i in items:
-		psa.append(i.replace(path, ""))
+		psa.append(i.replace("%s/" % path, ""))
 	var joined_items: String = psa.join("\n").strip_edges()
 	text_edit.text = ("%s\n%s" % [text_edit.text, joined_items]).strip_edges()
 
@@ -138,11 +141,12 @@ static func _parse_ignorables(te: TextEdit, path: String) -> ParsedIgnorables:
 		if text.empty():
 			continue
 		
-		if not text.is_abs_path():
+		if not text.is_rel_path():
 			r.register_error(i + 0, text, "File path expected")
 			return r
 		
-		if (not d.file_exists(text) and not d.dir_exists(text)):
+		var absolute_path: String = "%s/%s" % [path, text]
+		if (not d.file_exists(absolute_path) and not d.dir_exists(absolute_path)):
 			r.register_error(i + 0, text, "Item does not exist")
 			return r
 		

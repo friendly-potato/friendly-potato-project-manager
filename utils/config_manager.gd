@@ -172,7 +172,7 @@ class Plugin extends LoadableCopy:
 
 class ConfigData extends Loadable:
 	var templates: Array = [] # Template
-	var global_template_items_to_ignore: Array = [] # String
+	var global_template_items_to_ignore: Array = [".git", ".import", "project.godot"] # String
 	
 	var plugins: Array = [] # Plugin
 	
@@ -340,10 +340,7 @@ class ConfigData extends Loadable:
 # warning-ignore:return_value_discarded
 				OS.execute("echo", ["$HOME"], true, output)
 		if output.size() == 1:
-			var t: String = output[0].strip_edges()
-			if OS.get_name().to_lower() == "windows":
-				t = t.substr(2)
-			return t
+			return FileSystem.strip_drive(output[0].strip_edges())
 		return "/"
 
 ###############################################################################
@@ -354,10 +351,7 @@ func _init() -> void:
 	if not OS.is_debug_build():
 		_config_path = "user://"
 	else:
-		_config_path = ProjectSettings.globalize_path("res://export/")
-		if OS.get_name().to_lower() == "windows":
-			# Remove the drive for now
-			_config_path = _config_path.substr(2)
+		_config_path = FileSystem.strip_drive(ProjectSettings.globalize_path("res://export/"))
 	
 	load_config()
 	

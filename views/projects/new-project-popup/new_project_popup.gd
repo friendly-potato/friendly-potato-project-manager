@@ -114,7 +114,6 @@ func _on_create_edit() -> void:
 	var os: String = OS.get_name().to_lower()
 	match os:
 		"windows":
-			# This is so gross
 			# warning-ignore:return_value_discarded
 			OS.execute("type", ["nul", ">", "%s/project.godot" % project_path.text])
 		"x11", "osx":
@@ -127,27 +126,11 @@ func _on_create_edit() -> void:
 			AppManager.logger.error("Unable to open template: %s" % template)
 			return
 
-		# warning-ignore:return_value_discarded
-		t_dir.list_dir_begin(true, false)
-		
-		var config_data := AppManager.cm.config().find_template(template)
-
-		file_name = t_dir.get_next()
-		while file_name != "":
-			if file_name in [".git", ".import", "project.godot"]:
-				file_name = t_dir.get_next()
-				continue
-			
-			if template in config_data.items_to_ignore:
-				file_name = t_dir.get_next()
-				continue
-			
-			match os:
-				"windows":
-					FileSystem.rec_copy_windows("%s/%s" % [template, file_name], "%s/%s" % [project_path.text, file_name])
-				"x11", "osx":
-					FileSystem.rec_copy_linux("%s/%s" % [template, file_name], project_path.text)
-			file_name = t_dir.get_next()
+		_copy_template_recursive(
+			template,
+			project_path.text,
+			AppManager.cm.config().find_template(template),
+			AppManager.cm.config().global_template_items_to_ignore)
 		
 		AppManager.logger.debug("Finished copying templates")
 
@@ -216,6 +199,66 @@ func _populate_templates_plugins() -> void:
 		var item = POPUP_ITEM.instance()
 		item.text = p.path
 		plugins.add_child(item)
+
+func _copy_template_recursive(
+		from_base_path: String,
+		to_base_path: String,
+		template: ConfigManager.Template,
+		global_items_to_ignore: Array,
+		rel_path_chain: String = "") -> void:
+	var dir := Directory.new()
+	if dir.open("%s/%s" % [from_base_path, rel_path_chain]) != OK:
+		AppManager.logger.error("Unable to open path: %s/%s" % [from_base_path, rel_path_chain])
+		return
+	
+	if not dir.dir_exists("%s/%s" % [to_base_path, rel_path_chain]):
+		var t_dir := Directory.new()
+		if t_dir.open(to_base_path) != OK:
+			AppManager.logger.error("Unable to open %s" % to_base_path)
+			return
+
+		if t_dir.make_dir(rel_path_chain):
+			AppManager.logger.error("Unable to create dir %s/%s" % [
+				to_base_path, rel_path_chain])
+			return
+
+	if dir.list_dir_begin(true, false) != OK:
+		AppManager.logger.error("Unable to stream directory")
+		return
+	
+	var item_name: String = dir.get_next()
+	while item_name != "":
+		var constructed_path: String = "%s/%s" % [
+			rel_path_chain, item_name] if not rel_path_chain.empty() else item_name
+
+		if (constructed_path in global_items_to_ignore or
+				constructed_path in template.items_to_ignore):
+			item_name = dir.get_next()
+			continue
+		
+		if dir.current_is_dir():
+			_copy_template_recursive(
+				from_base_path,
+				to_base_path,
+				template,
+				global_items_to_ignore,
+				constructed_path)
+			item_name = dir.get_next()
+			continue
+
+		if dir.copy(
+				"%s/%s" % [from_base_path, constructed_path],
+				"%s/%s" % [to_base_path, constructed_path]) != OK:
+			AppManager.logger.error(
+				"Unable to copy %s/%s to %s/%s" % [
+					from_base_path,
+					constructed_path,
+					to_base_path,
+					constructed_path])
+			item_name = dir.get_next()
+			continue
+		
+		item_name = dir.get_next()
 
 ###############################################################################
 # Public functions                                                            #
